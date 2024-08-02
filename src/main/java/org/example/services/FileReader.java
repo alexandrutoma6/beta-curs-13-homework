@@ -13,14 +13,13 @@ public class FileReader {
 
     public List<Quote> readQuotesFromFile(String filename) {
         List<Quote> quotes = new ArrayList<>();
+
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("~");
                 if (parts.length == 2) {
-                    String author = parts[0];
-                    String quoteText = parts[1];
-                    Quote quote = new Quote(author, quoteText);
+                    Quote quote = createQuote(parts);
                     quotes.add(quote);
                 }
             }
@@ -28,6 +27,12 @@ public class FileReader {
             e.printStackTrace();
         }
         return quotes;
+    }
+
+    private static Quote createQuote(String[] parts) {
+        String author = parts[0];
+        String quoteText = parts[1];
+        return new Quote(author, quoteText);
     }
 
 }
